@@ -25,13 +25,18 @@ vira:
 
 ```text
 pasta-de-midia/
-  _selecionadas/                    # só o que vale manter
+  _selecionadas/
+    cenas/                          # fotos e vídeos com pessoa/ambiente (padrão)
+    objetos/                        # coisa isolada: close-up, peça, produto (só se houver)
+    prints/                         # screenshots, convites, artes digitais (só se houver)
   _descartadas/
     duplicadas/                     # idênticas byte-a-byte ou versões com UI
     muito_parecidas/                # quase iguais, com uma melhor mantida
     baixa_qualidade/                # borradas, escuras, recortes inúteis
-  relatorio_triagem.csv             # arquivo,decisao,motivo (1 linha por original)
+  relatorio_triagem.csv             # arquivo,decisao,motivo,categoria (1 linha por original)
 ```
+
+Subpastas de `_selecionadas/` só são criadas quando têm conteúdo — nunca pastas vazias. Todo o resto (cenas, pessoas e vídeos, que são cenas em movimento) fica em `cenas/`.
 
 Os arquivos originais **permanecem intactos** na pasta. Tudo é feito por cópia.
 
