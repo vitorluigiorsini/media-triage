@@ -9,7 +9,10 @@ Separate good photos/videos from duplicates, near-duplicates, and low-quality sh
 
 ## Workflow
 
-Follow these phases in order. Keep user friction minimal: at most one confirmation round before organizing.
+Follow these phases in order. The flow is fully automatic: do not ask for
+confirmation before organizing. If the user later disagrees with any choice,
+they just ask ("move X to _selecionadas/cenas") and you fix it — originals are
+never touched, so corrections are trivial.
 
 ### 1. Inventory (read-only)
 
@@ -44,21 +47,7 @@ imposes no such limit, larger batches are fine.
 - Preserve meaningful variations (e.g. trio photo vs. group-of-six photo, different products on a shelf) — the user wants good variations kept.
 - Unique scenes are always kept.
 
-### 4. One-shot confirmation (minimal friction)
-
-Present a short list per group, one line each:
-
-```text
-manter IMG_2741.HEIC | descartar IMG_2740.HEIC (criança de cara fechada)
-```
-
-The user replies in the fastest way they prefer:
-
-- a. `ok` → execute as proposed;
-- b. `troca A por B no grupo N` → swap before copying;
-- c. Post-execution fix → `move ARQ para _selecionadas` (or the reverse); update the CSV. Originals are never touched, so corrections are trivial.
-
-### 5. Organize (copy only)
+### 4. Organize immediately (copy only, no confirmation round)
 
 Classify every keeper into exactly one subject bucket, and every discard into
 exactly one reason bucket. Create any subfolder below **only if it has ≥1
@@ -77,6 +66,7 @@ Rules:
 - **Copy** (never move, never delete originals).
 - Verify afterwards: `selecionadas + descartadas == total`, and spot-check that copies match originals.
 - Clean up temp files (`_tmp_*`).
+- Post-execution swaps: if the user later asks (`move X para _selecionadas/cenas`, or the reverse), do it and update the CSV.
 
 ## Edge cases
 

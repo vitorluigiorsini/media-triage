@@ -11,7 +11,7 @@ Dada uma pasta com fotos (`JPG`, `PNG`, `HEIC`) e vídeos (`MOV`, `MP4`), a skil
 1. Faz inventário (hash `sha256` para duplicadas exatas).
 2. Roda análise automática de similaridade (pHash) e qualidade (nitidez, brilho, resolução) + extrai frames dos vídeos.
 3. Revisa **visualmente** cada grupo e escolhe a melhor foto (olhos abertos, sorriso, enquadramento limpo).
-4. Pede **uma única confirmação** curta antes de organizar.
+4. Organiza **automaticamente**, sem pedir confirmação.
 5. Copia os arquivos para pastas organizadas + gera relatório CSV.
 
 ### Antes / depois
@@ -96,19 +96,15 @@ A skill aparece na lista de skills disponíveis. Para usar, peça ao agente:
 
 Os agentes detectam a skill automaticamente. Se não ativar sozinha, mencione `media-triage` no prompt.
 
-### Fluxo semi-automático (atrito mínimo)
+### Fluxo 100% automático (zero confirmação)
 
-Você só precisa responder **uma vez** à lista de grupos, com uma linha por grupo:
+Você só passa a pasta — o agente decide, organiza e entrega o resumo. Sem perguntas no meio.
 
-```text
-manter IMG_2741.HEIC | descartar IMG_2740.HEIC (criança de cara fechada)
-```
+Se discordar de alguma escolha depois, basta pedir em linguagem natural:
 
-Três formas de responder, da mais rápida à mais fina:
+> move IMG_1030 para _selecionadas/cenas
 
-- **a.** `ok` → executa tudo como proposto.
-- **b.** `troca A por B no grupo N` → inverte a escolha antes de copiar (ex: "no trio das medalhas, mantém HUFC em vez de QZEH").
-- **c.** Correção depois de pronto → `move IMG_X para _selecionadas` (ou o inverso). Como são cópias e os originais estão intactos, a correção é trivial e o CSV é atualizado.
+O agente move e atualiza o CSV. Como são cópias e os originais estão intactos, a correção é trivial.
 
 Variações com valor distinto são preservadas (ex: foto do trio + foto do grupo de 6, produtos diferentes na prateleira).
 
@@ -122,22 +118,16 @@ Suponha a skill instalada e uma pasta bagunçada em `"/home/vitororsini/Download
 
 Não precisa de slash command (`/media-triage` não existe nem é necessário): o agente identifica a skill pela descrição e carrega as instruções sozinho. Mencionar `media-triage` no pedido ajuda, mas até *"separa as fotos boas da pasta X"* funciona.
 
-**2. O agente trabalha sozinho:** inventário (`sha256`), análise automática (`scripts/triagem.py` → `_tmp_metricas.csv` + frames dos vídeos) e revisão visual de cada grupo suspeito.
+**2. O agente trabalha sozinho:** inventário (`sha256`), análise automática (`scripts/triagem.py` → `_tmp_metricas.csv` + frames dos vídeos), revisão visual de cada grupo e organização imediata — sem confirmação.
 
-**3. Você confirma uma vez:**
+**3. O agente entrega o resumo:**
 
 ```text
-Grupo 1 (pôr do sol, 4 fotos): manter IMG_1024.HEIC | descartar as outras 3 (foco pior)
-Grupo 2 (selfie praia, 2 fotos): manter IMG_1031.JPG | descartar IMG_1030.JPG (olhos fechados)
-Grupo 3 (nota fiscal, 1 foto): manter em prints/ (só ela na categoria)
-Demais 40 arquivos: únicos, mantidos em cenas/
+44 mantidas (41 cenas, 2 objetos, 1 print) | 4 descartadas (3 similares, 1 baixa qualidade)
+Veredito por grupo + relatorio_triagem.csv pronto para conferência.
 ```
 
-Responda `ok` — ou `troca A por B no grupo 2`, se discordar de algo.
-
-**4. O agente organiza:** copia (nunca apaga originais) para `_selecionadas/cenas|objetos|prints/` e `_descartadas/...`, gera `relatorio_triagem.csv`, limpa os `_tmp_*` e resume o resultado.
-
-**5. Correção tardia:** os originais seguem intactos, então basta pedir `move IMG_1030 para _selecionadas/cenas` — o agente move e atualiza o CSV, sem reprocessar nada.
+**4. Correção posterior (se precisar):** os originais seguem intactos, então basta pedir `move IMG_1030 para _selecionadas/cenas` — o agente move e atualiza o CSV, sem reprocessar nada.
 
 ## Como funciona por dentro
 
