@@ -49,6 +49,14 @@ Os arquivos originais **permanecem intactos** na pasta. Tudo é feito por cópia
 pip install -r scripts/requirements.txt
 ```
 
+### Notas por sistema operacional
+
+A skill funciona em **Linux, macOS e Windows** sem mudança de código (o script usa só `os.path`, e o `imageio-ffmpeg` baixa o binário do ffmpeg correto para cada OS). Pontos de atenção:
+
+- **Windows:** instale o Python 3.10+ em python.org marcando **"Add python.exe to PATH"** (erro mais comum); rode os comandos no Git Bash ou PowerShell; o `npx skills add ...` funciona no CMD/PowerShell com Node.js instalado.
+- **macOS:** garanta `python3` e `pip` (via Xcode Command Line Tools, python.org ou Homebrew); há wheels prontos para Intel e Apple Silicon em todas as dependências.
+- **Geral:** passe a pasta sempre entre aspas (caminhos com espaços/acentos funcionam); extensões são comparadas em minúsculas, então filesystems case-insensitive não quebram nada.
+
 ## Instalação
 
 ### Via CLI `skills` (recomendado)
@@ -103,6 +111,33 @@ Três formas de responder, da mais rápida à mais fina:
 - **c.** Correção depois de pronto → `move IMG_X para _selecionadas` (ou o inverso). Como são cópias e os originais estão intactos, a correção é trivial e o CSV é atualizado.
 
 Variações com valor distinto são preservadas (ex: foto do trio + foto do grupo de 6, produtos diferentes na prateleira).
+
+### Exemplo de uso
+
+Suponha a skill instalada e uma pasta bagunçada em `"/home/vitororsini/Downloads/viagem_julho"`:
+
+**1. Você chama (o caminho da pasta é o único dado obrigatório):**
+
+> Use a skill media-triage na pasta "/home/vitororsini/Downloads/viagem_julho"
+
+Não precisa de slash command (`/media-triage` não existe nem é necessário): o agente identifica a skill pela descrição e carrega as instruções sozinho. Mencionar `media-triage` no pedido ajuda, mas até *"separa as fotos boas da pasta X"* funciona.
+
+**2. O agente trabalha sozinho:** inventário (`sha256`), análise automática (`scripts/triagem.py` → `_tmp_metricas.csv` + frames dos vídeos) e revisão visual de cada grupo suspeito.
+
+**3. Você confirma uma vez:**
+
+```text
+Grupo 1 (pôr do sol, 4 fotos): manter IMG_1024.HEIC | descartar as outras 3 (foco pior)
+Grupo 2 (selfie praia, 2 fotos): manter IMG_1031.JPG | descartar IMG_1030.JPG (olhos fechados)
+Grupo 3 (nota fiscal, 1 foto): manter em prints/ (só ela na categoria)
+Demais 40 arquivos: únicos, mantidos em cenas/
+```
+
+Responda `ok` — ou `troca A por B no grupo 2`, se discordar de algo.
+
+**4. O agente organiza:** copia (nunca apaga originais) para `_selecionadas/cenas|objetos|prints/` e `_descartadas/...`, gera `relatorio_triagem.csv`, limpa os `_tmp_*` e resume o resultado.
+
+**5. Correção tardia:** os originais seguem intactos, então basta pedir `move IMG_1030 para _selecionadas/cenas` — o agente move e atualiza o CSV, sem reprocessar nada.
 
 ## Como funciona por dentro
 
