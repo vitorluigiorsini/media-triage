@@ -31,12 +31,12 @@ pasta-de-midia/
     prints/                         # screenshots, convites, artes digitais (só se houver)
   _descartadas/
     duplicadas/                     # idênticas byte-a-byte ou versões com UI
-    muito_parecidas/                # quase iguais, com uma melhor mantida
+    similares/                      # quase iguais, com uma melhor mantida
     baixa_qualidade/                # borradas, escuras, recortes inúteis
   relatorio_triagem.csv             # arquivo,decisao,motivo,categoria (1 linha por original)
 ```
 
-Subpastas de `_selecionadas/` só são criadas quando têm conteúdo — nunca pastas vazias. Todo o resto (cenas, pessoas e vídeos, que são cenas em movimento) fica em `cenas/`.
+Subpastas de `_selecionadas/` e `_descartadas/` só são criadas quando têm conteúdo — nunca pastas vazias. Todo o resto (cenas, pessoas e vídeos, que são cenas em movimento) fica em `cenas/`.
 
 Os arquivos originais **permanecem intactos** na pasta. Tudo é feito por cópia.
 

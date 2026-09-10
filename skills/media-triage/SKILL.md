@@ -60,13 +60,15 @@ The user replies in the fastest way they prefer:
 
 ### 5. Organize (copy only)
 
-Classify every keeper into exactly one subject bucket (create a subfolder **only if it has ≥1 file** — never empty folders):
+Classify every keeper into exactly one subject bucket, and every discard into
+exactly one reason bucket. Create any subfolder below **only if it has ≥1
+file** — never empty folders:
 
 - `_selecionadas/cenas/` — photos or videos with people and/or environment (the default bucket; videos are scenes in motion).
 - `_selecionadas/objetos/` — isolated thing with no person and no scene: close-up, single item, product, ad still.
 - `_selecionadas/prints/` — screenshots, screen photos, invites, and digital art.
 - `_descartadas/duplicadas/` — byte-identical or UI-duplicated versions.
-- `_descartadas/muito_parecidas/` — near-duplicates where a better keeper exists.
+- `_descartadas/similares/` — near-duplicates where a better keeper exists.
 - `_descartadas/baixa_qualidade/` — blurry, dark, or unusably cropped shots.
 - `relatorio_triagem.csv` — columns `arquivo,decisao,motivo,categoria` (`cenas`/`objetos`/`prints`, empty for discarded), one row per original file.
 
