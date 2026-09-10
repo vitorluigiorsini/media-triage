@@ -35,7 +35,10 @@ The script outputs `_tmp_metricas.csv` plus candidate groups:
 
 ### 3. Visual review (you decide)
 
-Open every candidate group and pick the keeper:
+Open every candidate group and pick the keeper. Read at most ~10 images per
+message, in sequential turns — some free-tier providers cap images per request,
+and pagination avoids hard errors at almost no extra time cost. If the model
+imposes no such limit, larger batches are fine.
 
 - Prefer sharper focus, open eyes, genuine smiles, clean framing, no intruders at the edges.
 - Preserve meaningful variations (e.g. trio photo vs. group-of-six photo, different products on a shelf) — the user wants good variations kept.

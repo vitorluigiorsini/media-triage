@@ -154,6 +154,7 @@ Responda `ok` — ou `troca A por B no grupo 2`, se discordar de algo.
 ## Limites conhecidos
 
 - Pastas com 500+ arquivos são processadas em lotes, com resumo por grupo.
+- Em tiers gratuitos com limite de imagens por request, a skill pagina a revisão visual automaticamente (máx. ~10 imagens por mensagem).
 - Arquivo corrompido ou HEIC sem suporte é registrado como `img-erro` no CSV e **mantido** por segurança.
 - Sem `ffmpeg`, vídeos entram como `sem-preview` e também são mantidos.
 
