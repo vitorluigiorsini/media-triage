@@ -1,0 +1,6 @@
+Pillow>=10
+pillow-heif>=0.15
+ImageHash>=4.3
+opencv-python>=4.8
+imageio-ffmpeg>=0.5
+numpy>=1.24

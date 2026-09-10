@@ -1,0 +1,9 @@
+__pycache__/
+*.pyc
+.venv/
+venv/
+_selecionadas/
+_descartadas/
+_tmp_*
+relatorio_triagem.csv
+.DS_Store
