@@ -135,11 +135,11 @@ Veredito por grupo + relatorio_triagem.csv pronto para conferência.
 |---|---|
 | Duplicadas exatas | `sha256` do arquivo |
 | Muito parecidas | distância de `pHash` ≤ 12 |
-| Nitidez | variância do Laplaciano (OpenCV) — maior = mais nítida |
+| Nitidez | consenso de 3 métricas em lado maior ≥ 1024px (Laplaciano + Tenengrad + SMD), normalizadas por grupo com penalidade de ruído — colunas `pontos`/`rank_grupo` |
 | Exposição | brilho médio do histograma |
 | HEIC | leitura via `pillow-heif` |
 | Vídeos | 3 frames (início/meio/fim aprox.) via `imageio-ffmpeg` (traz o binário do ffmpeg, sem instalar nada no sistema) |
-| Decisão final | sempre visual, pelo agente — métricas são só pistas |
+| Decisão final | sempre visual, pelo agente — métricas sugerem, vetos (olhos fechados, olhar desviado, intruso) prevalecem |
 
 ## Limites conhecidos
 

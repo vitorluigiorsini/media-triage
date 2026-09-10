@@ -32,20 +32,39 @@ python3 scripts/triagem.py "/path/to/media/folder"
 The script outputs `_tmp_metricas.csv` plus candidate groups:
 
 - **Exact duplicates:** identical `sha256`.
-- **Near-duplicates:** perceptual-hash (`pHash`) distance ≤ 12.
-- **Low quality signals:** resolution, Laplacian-variance blur score, brightness. Treat scores as hints, never as final verdicts.
-- **Videos:** extract 3 frames each for visual review.
+- **Near-duplicates:** perceptual-hash (`pHash`) distance ≤ 12, grouped by connected components.
+- **Sharpness signals (suggestion only):** Laplacian variance + Tenengrad + SMD, always measured at longer side ≥ 1024px, normalized per group with noise penalty and Borda-count consensus (`pontos`, `rank_grupo`). Per-metric values are in the CSV for auditing. No single gradient-energy metric is trustworthy alone — full-res Laplacian rewards noise.
+- **Brightness:** histogram mean (context only).
+- **Videos:** extract 3 frames each for visual review (visualization only).
 
-### 3. Visual review (you decide)
+Explicit rule: thumbnails ≤ 512px are for visualization only, never the decider.
+
+### 3. Visual review (you decide — metrics suggest, human decides)
 
 Open every candidate group and pick the keeper. Read at most ~10 images per
 message, in sequential turns — some free-tier providers cap images per request,
 and pagination avoids hard errors at almost no extra time cost. If the model
 imposes no such limit, larger batches are fine.
 
+Perceived quality in people photos is face/expression (open eyes, looking at
+the camera, smile), not global texture — a photo can lead every sharpness
+metric and still lose to a better expression. Apply this veto list with
+precedence over ANY sharpness ranking, and record the veto reason in the CSV
+`veto` column:
+
+- Closed eyes, gaze away from the camera, hidden face.
+- Moving intruder at the edge / cut-off person.
+
+Other rules:
+
 - Prefer sharper focus, open eyes, genuine smiles, clean framing, no intruders at the edges.
 - Preserve meaningful variations (e.g. trio photo vs. group-of-six photo, different products on a shelf) — the user wants good variations kept.
 - Unique scenes are always kept.
+
+Scene check (greedy pHash grouping can merge distinct scenes): if a group
+contains 2+ distinct scenes (e.g. solo under the arch vs. duo on the track),
+elect one keeper PER SCENE. If two groups contain the same scene, keep only
+the best across them and document the link in the CSV `motivo`.
 
 ### 4. Organize immediately (copy only, no confirmation round)
 
@@ -59,7 +78,7 @@ file** — never empty folders:
 - `_descartadas/duplicadas/` — byte-identical or UI-duplicated versions.
 - `_descartadas/similares/` — near-duplicates where a better keeper exists.
 - `_descartadas/baixa_qualidade/` — blurry, dark, or unusably cropped shots.
-- `relatorio_triagem.csv` — columns `arquivo,decisao,motivo,categoria` (`cenas`/`objetos`/`prints`, empty for discarded), one row per original file.
+- `relatorio_triagem.csv` — columns `arquivo,decisao,motivo,categoria,veto` (`cenas`/`objetos`/`prints`, empty for discarded), one row per original file.
 
 Rules:
 
